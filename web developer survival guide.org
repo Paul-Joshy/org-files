@@ -1,0 +1,101 @@
+#+title: Webdev survival guide: UIPEP edition
+#+author: Paul Joshy
+
+* Formatting options
+
+This is the format that is going to be used throughout the handbook. You can refer this guide from time to time when you feel the examples are getting ambiguous.
+
+| Format        | Meaning                                      | Examples              |
+|---------------+----------------------------------------------+-----------------------|
+| Regular text  | Type exactly as shown                        | git init              |
+| <Tag>         | Replace with appropriate argument            | cd <filename>         |
+| Elipsis (...) | You can repeat as many arguments as you want | touch file1 file2 ... |
+|---------------+----------------------------------------------+-----------------------|
+
+* Git
+
+in order to manage huge projects among multiple people and keep track of every little change, we use git. in this section we explore how to
+- create a repository from scratch (initializing)
+- set up an existing repository from the cloud (cloning)
+- save changes (commiting)
+- managing your own sub versions of the code (branching)
+- upload the contents to the cloud (pushing)
+- get the updated code from the cloud (pulling)
+- resolve conflicts when two people write code in the same file (merging)
+- basic troubleshooting examples and solutions
+
+** Initializing a git repository
+
+first create a directory using the foll code. you can also use your file manager to create a folder
+#+begin_src 
+mkdir <project name>
+#+end_src
+now, we need to initialize a git repository. git won't be able to track your files until you have initialized them.
+#+begin_src 
+git init
+#+end_src
+you will get an error saying this is not initialized, it's probably cuz you're in the wrong folder or haven't initialized the repo in git.
+
+once the repository is initialized, you can continue with the development of the project. git will take care of managing the changes we've made for a particular project from now on.
+you can see a snapshot of your changes by typing the following command
+#+begin_src 
+git status
+#+end_src
+This command is very useful when you have to have a quick look at the files changed, added or deleted. You can even add the =--short= tag to just view the files without any extra description
+
+** Cloning an existing git repository
+
+Most of the time, you will be required to work on an existing project rather than build one from scratch. in this case, the code will be provided on the git hosting domain like [[https://www.github.com][Github]], [[https://bitbucket.org/][Bitbucket]], [[https://www.gitlab.com][Gitlab]] etc.
+This can be reffered to as cloning an existing repo. This can be done using the foll command
+#+begin_src
+git clone <git url> <filename>
+#+end_src
+Notice how I added the filename in the end. If we don't specify the filename, git will create a file with the same filename as the git repository's name.
+
+*WARNING* If you try to clone a repo into an existing repo, then it will create a new repo inside the parent repo.
+If you want to change the name of the repo, you can just change the filename in the git clone commmand.
+** Adding files
+
+Just because you have initialized your repo doesn't mean git is ready to manage all your files. You have to specify which files git needs to track. You may think this is an unnecessary extra step but this way, you can have untracked files which contains sensitive information. More on that on a different thread.
+
+It's useful to imagine the tracked and untracked files to be living in 2 different locations
+
+- The staging area is where git monitors all the changes.
+- The working area is where none of the changes are monitored.
+
+In order for git to manage your files, you will need to add them to git. You can use the following command
+#+begin_src 
+git add file1 file2 ...
+#+end_src
+
+You can use =.= to add all the files in the existing direcory or =<directory name>/*= to include everything in a specific directory
+
+#+begin_src 
+git add file1 file2 ...
+#+end_src
+
+You can use =.= to add all the files in the existing direcory or =<directory name>/*= to include everything in a specific directory
+** Commiting changes
+
+We have learned how to Initialize a git repository from scratch and clone from
+an existing repository. We even know how to view the changes we have made.
+However, the true power of git lies in saving snapshots of code. To do that,
+type
+#+begin_src
+git commit -a -m <Commit message>
+#+end_src
+
+In this example =-a= is used to commit all the files that are staged and =-m= is
+used to write a commit message. Commit messages are used to give a short
+description about the changes that you have made to the files. There is another
+command that is used to view all the existing commmands in a timeline format.
+This is used for viewing all the changes that you have made since the beginning.
+The command is as follows
+#+begin_src
+git log
+#+end_src
+You can also add the =--oneline= tag to view each log in a short line.
+
+Try to keep log messages clean. For example "Made changes" is a very vague
+sentence compared to "Fixed a bug in user model". The clearer the messages are,
+the easier it is for you to track down issues when they occur 
