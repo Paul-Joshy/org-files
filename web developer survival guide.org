@@ -1,10 +1,15 @@
-#+title: Webdev survival guide: UIPEP edition
+#+title: Webdev Survival Handbook: UIPEP Edition
 #+author: Paul Joshy
+
+* Introduction
+
+This guide has been made keeping the daily struggles of a lot of noob developers in mind. Hopefully this could be a reference for them till they are able to independently solve problems. I will be covering the basics which I think every web developer would be using in their day to day life. This could be a bit oversimplified for advanced users but hey, we all gotta start somewhere.
 
 * Formatting options
 
 This is the format that is going to be used throughout the handbook. You can refer this guide from time to time when you feel the examples are getting ambiguous.
 
+|---------------+----------------------------------------------+-----------------------|
 | Format        | Meaning                                      | Examples              |
 |---------------+----------------------------------------------+-----------------------|
 | Regular text  | Type exactly as shown                        | git init              |
@@ -15,33 +20,34 @@ This is the format that is going to be used throughout the handbook. You can ref
 * Git
 
 in order to manage huge projects among multiple people and keep track of every little change, we use git. in this section we explore how to
-- create a repository from scratch (initializing)
-- set up an existing repository from the cloud (cloning)
-- save changes (commiting)
-- managing your own sub versions of the code (branching)
-- upload the contents to the cloud (pushing)
-- get the updated code from the cloud (pulling)
-- resolve conflicts when two people write code in the same file (merging)
-- basic troubleshooting examples and solutions
+- Create a repository from scratch (initializing)
+- Set up an existing repository from the cloud (cloning)
+- Save changes (commiting)
+- Basic troubleshooting examples and solutions
+- Managing your own sub versions of the code (branching)
+- Upload the contents to the cloud (pushing)
+- Get the updated code from the cloud (pulling)
+- Resolve conflicts when two people write code in the same file (merging)
 
 ** Initializing a git repository
 
-first create a directory using the foll code. you can also use your file manager to create a folder
+First create a directory using the foll code. you can also use your file manager to create a folder
 #+begin_src 
 mkdir <project name>
 #+end_src
-now, we need to initialize a git repository. git won't be able to track your files until you have initialized them.
+Now, we need to initialize a git repository. git won't be able to track your files until you have initialized them.
 #+begin_src 
 git init
 #+end_src
-you will get an error saying this is not initialized, it's probably cuz you're in the wrong folder or haven't initialized the repo in git.
+You will get an error saying this is not initialized, it's probably cuz you're in the wrong folder or haven't initialized the repo in git.
 
-once the repository is initialized, you can continue with the development of the project. git will take care of managing the changes we've made for a particular project from now on.
+Once the repository is initialized, you can continue with the development of the project. git will take care of managing the changes we've made for a particular project from now on.
 you can see a snapshot of your changes by typing the following command
 #+begin_src 
 git status
 #+end_src
-This command is very useful when you have to have a quick look at the files changed, added or deleted. You can even add the =--short= tag to just view the files without any extra description
+
+*TIP* This command is very useful when you have to have a quick look at the files changed, added or deleted. You can even add the =--short= tag to just view the files without any extra description
 
 ** Cloning an existing git repository
 
@@ -68,19 +74,15 @@ In order for git to manage your files, you will need to add them to git. You can
 git add file1 file2 ...
 #+end_src
 
-You can use =.= to add all the files in the existing direcory or =<directory name>/*= to include everything in a specific directory
+*TIP* You can use =.= to add all the files in the existing direcory or =<directory name>/*= to include everything in a specific directory
 
-#+begin_src 
-git add file1 file2 ...
-#+end_src
-
-You can use =.= to add all the files in the existing direcory or =<directory name>/*= to include everything in a specific directory
 ** Commiting changes
 
 We have learned how to Initialize a git repository from scratch and clone from
 an existing repository. We even know how to view the changes we have made.
 However, the true power of git lies in saving snapshots of code. To do that,
 type
+
 #+begin_src
 git commit -a -m <Commit message>
 #+end_src
@@ -91,11 +93,84 @@ description about the changes that you have made to the files. There is another
 command that is used to view all the existing commmands in a timeline format.
 This is used for viewing all the changes that you have made since the beginning.
 The command is as follows
+
 #+begin_src
 git log
 #+end_src
-You can also add the =--oneline= tag to view each log in a short line.
 
-Try to keep log messages clean. For example "Made changes" is a very vague
+*TIP* You can also add the =--oneline= tag to view each log in a short line.
+
+*NOTE* Try to keep log messages clean and readable. For example "Made changes" is a very vague
 sentence compared to "Fixed a bug in user model". The clearer the messages are,
 the easier it is for you to track down issues when they occur 
+** Managing branches
+
+Creating branches are a great way to organise our code when we are working on multiple incomplete features. I'll give you an example to illustrate.
+
+Suppose you are working on a feature. It's buggy and you're sure that you will break your code. You have 2 options
+- Commit the code and tell them you're not ready to deploy the code as it might break. This is a waste of development time
+- Don't commit the code and deploy the committed code. This is better but then there is no way to save your code.
+
+Git allows you to store your unfinished features into seperate branches so it doesn't interfere with the main source code. In fact, please use git branches when coding a new feature.
+
+Let's check out our current branch by typing out the following command
+#+begin_src
+git branch
+#+end_src
+
+If you have been following the instructions, you should probably be in the master branch. To fetch all branches from the remote, you can type
+#+begin_src
+git fetch --all
+#+end_src
+
+You can go to an existing branch by using the checkout command
+#+begin_src
+git checkout <branchname>
+#+end_src
+
+Notice that you type =git branch= now it will still not show all the branches that you have fetched. To view that, you will have to add the =--all= argument to the command.
+
+*TIP* You can use the =checkout= command to checkout different commits by typing the hash (the first 8 letters of a commit id).
+
+*TIP* You can use the =-b= command along with =git clone= to clone just the specific branch instead of the default master branch. For example
+
+#+begin_src
+git clone -b <branchname> <git-url> <filename>
+#+end_src
+
+
+*** Creating a new branch
+
+You can create a new branch by typing this
+#+begin_src 
+git branch <branchname>
+#+end_src
+
+*TIP* You can use the =-b= argument with the =checkout= command to create and switch to a new branch. This saves you from typing an extra command.
+
+*** Deleting an existing branch
+
+You can delete an existing branch using the =-D= attribute along with the =branch= command. For example
+#+begin_src
+git branch -D <branchname>
+#+end_src
+
+*WARNING* Git won't allow you to delete from the branch you are currently in. Always make sure to =checkout= to a new branch before deleting it.
+
+** Pushing and pulling your repository
+
+Git is amazing when there are multiple people working on a single projects. Although our first instinct will be to copy paste code and share it among everyone, it's a terrible idea because of the following reasons I can think of over the top of my head
+
+- You won't be able to make sure you have copied and pasted everything.
+- You will have to keep copying it to everyone's files whenever someone changes something.
+- You won't have a reliable record of the things that has changed and the list of things needed to be updated from all the people who are working in your code
+
+You can use this command to pull from an existing remote branch to your branch using 
+#+begin_src
+git pull origin <branchname>
+#+end_src
+
+You can use this command to push to an existing branch in the remote using
+#+begin_src
+git push origin <branchname>
+#+end_src
