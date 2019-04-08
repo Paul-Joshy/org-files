@@ -5,6 +5,56 @@
 
 This guide has been made keeping the daily struggles of a lot of noob developers in mind. Hopefully this could be a reference for them till they are able to independently solve problems. I will be covering the basics which I think every web developer would be using in their day to day life. This could be a bit oversimplified for advanced users but hey, we all gotta start somewhere.
 
+* The command line
+
+Love it or hate it, you'll have to be working with the command line so it's best to know some useful tips.
+
+** Basic format 
+The usual format for the command line is as follows
+
+#+begin_src
+COMMAND --arg-1 --arg-2 ... file1 file2 ...
+#+end_src
+
+*TIP* Abbreviated arguments are usually prefixed with a single dash and whole words are prefixed with 2 dashes.
+
+*TIP* Abbreviated arguments can be stringed together. For example
+
+#+begin_src
+ls -l -a
+#+end_src
+
+can be shortened to
+
+#+begin_src
+ls -la
+#+end_src
+
+*NOTE* if you have properties along with arguments like how the =--output= arguments requires file names, it's usually together. For example
+instead of
+
+#+begin_src
+ssh -iv <filename>
+#+end_src
+
+it should be
+
+#+begin_src
+ssh -i <filename> -v
+#+end_src
+
+As =<filename>= is the property of =-i= (identity file), it should be paired together.
+
+** Common arguments 
+
+Here are common arguments which you find in a lot of terminal commands
+
+- =-v= or =--verbose= for generating detailed output instead of showing basic information (used for debugging);
+- =-v= or =--version= for showing the version of the program.
+- =-h=, =--help= or =-help= for giving some details regarding usage of the command.
+- =-o= or =--output= for writing the output to a file.
+- =-a= or =--all= show all categories of the command including hidden categories
+
 * Formatting options
 
 This is the format that is going to be used throughout the handbook. You can refer this guide from time to time when you feel the examples are getting ambiguous.
@@ -16,6 +66,117 @@ This is the format that is going to be used throughout the handbook. You can ref
 | <Tag>         | Replace with appropriate argument            | cd <filename>         |
 | Elipsis (...) | You can repeat as many arguments as you want | touch file1 file2 ... |
 |---------------+----------------------------------------------+-----------------------|
+
+* Setting up
+  
+*NOTE* This is only applicable to people who are using Linux. Windows and MacOS people will have to wait till I update this. Also I'll be using the =apt= Package manager in my examples but you may use whatever default manager as you like
+
+** Git
+
+Installing git is as easy as
+
+#+begin_src
+sudo apt install git -y
+#+end_src
+
+** Code editors
+
+For most code editors, you can  go to their source page and download the =.deb= package. You can then double click it and the default installer appears. If you're using visual studio, you don't have to leave the terminal as there is a snap package.
+
+First install snapd
+#+begin_src
+sudo apt install snapd -y
+#+end_src
+
+Then you can install vscode using snap
+#+begin_src
+sudo snap install vscode --classic
+#+end_src
+
+** Mongodb
+
+Installing mongodb requires a few steps.
+
+First, Import the public key used by the package management system.
+
+#+begin_SRC
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+#+end_src
+
+Then, create a list file for mongodb
+#+begin_src
+echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+#+end_src
+
+Then, do apt update
+#+begin_src
+sudo apt update
+#+end_src
+
+*NOTE* The newer ubuntu versions update by default but you can still run the command twice if you want
+
+Finally, install mongodb
+#+begin_src
+sudo apt-get install -y mongodb-org
+#+end_src
+
+** Postman
+
+You can either download and install via your browser or you can install it from the comfort of your terminal.
+
+First install snapd (You don't need to if you're using ubuntu I think)
+#+begin_src
+sudo apt install snapd -y
+#+end_src
+
+And then install postman via snap
+
+#+begin_src
+sudo snap install postman --classic
+#+end_src
+
+** Node
+
+You can install node via =apt= but it's probably best if you can change the versions whenever you want to. I personally recommend [[https://github.com/creationix/nvm][NVM]]
+
+To install nvm, type
+
+#+begin_src
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+#+end_src
+
+If that doesn't work try with wget
+
+#+begin_src
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+#+end_src
+
+Then, source your =~/.bashrc= file by typing
+
+#+begin_src
+source ~/.bashrc
+#+end_src
+
+You can check if nvm is installed correctly by typing
+#+begin_src
+command -v nvm
+#+end_src
+
+If it's properly installed, you can proceed to install your version of node. Suppose you want to install v10.15.1, you can type
+#+begin_src
+nvm install 10.15.1
+#+end_src
+
+Once installed, you can check if the right versions are installed by typing
+#+begin_src
+node -v
+#+end_src
+
+and
+
+#+begin_src
+nvm -v
+#+end_src
 
 * Git
 
@@ -30,7 +191,6 @@ in order to manage huge projects among multiple people and keep track of every l
 - Resolve conflicts when two people write code in the same file (merging)
 
 ** Initializing a git repository
-
 First create a directory using the foll code. you can also use your file manager to create a folder
 #+begin_src 
 mkdir <project name>
@@ -174,3 +334,42 @@ You can use this command to push to an existing branch in the remote using
 #+begin_src
 git push origin <branchname>
 #+end_src
+* SSH
+ 
+If you are supposed to deploy a server on an amazon EC2 instance, this command could come in handy
+ 
+** Giving an alias to your ip address
+
+Remembering ip addressess is a useless skill if you're using linux, as you can create an alias for your public ip address which could be used throughout your system, which includes
+- Your terminal when you use the =ping= or =dig= command
+- Your browser
+
+The most popular ip address alias is localhost. When you type localhost, It is understood by the system that it (usually) means 127.0.0.1. You can check this by opening the file =/etc/hosts=
+
+To create an alias, you can open your =/etc/hosts= file using the editor of choice and type out the following in the last line
+#+begin_src
+<ip address> <alias name>
+#+end_src
+
+for example, if your alias name is dummyip and ip address is 1.1.1.1, then type
+
+#+begin_src
+1.1.1.1 dummyip
+#+end_src
+
+Save the file and then you'll be able to use the alias anywhere
+** Using the ssh command
+
+The =ssh= command is used to connect remotely to another system via the terminal. It would be as if you've opened a terminal screen of that system on your system. This could be used to open AWS EC2 instance servers for example. You can use the command as follows
+
+#+begin_src
+ssh -i <path/to/pem/file.pem <username>@<your ip or alias>
+#+end_src
+
+A real life example would be
+
+#+begin_src
+ssh -i ~/Downloads/uipep/pem ubuntu@uipepserver
+#+end_src
+
+where =-i= stands for identitly (pem) file.
