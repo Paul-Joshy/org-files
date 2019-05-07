@@ -120,6 +120,14 @@ Finally, install mongodb
 sudo apt-get install -y mongodb-org
 #+end_src
 
+** MySQL
+   
+You can install Mysql using the =apt= repository using the foll command
+
+#+begin_src
+sudo apt install mysql-server -y
+#+end_src
+
 ** Postman
 
 You can either download and install via your browser or you can install it from the comfort of your terminal.
