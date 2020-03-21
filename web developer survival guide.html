@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Webdev Survival Handbook: UIPEP Edition</title>
+<!-- 2020-03-05 Thu 15:08 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Org-mode">
+<meta name="author" content="Paul Joshy">
+
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<style type="text/css">
+/* org mode styles on top of twbs */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-size: 18px;
+    margin-bottom: 105px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 101px;
+    background-color: #f5f5f5;
+}
+
+footer > div {
+    padding: 10px;
+}
+
+footer p {
+    margin: 0 0 5px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#table-of-contents {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+blockquote p {
+    font-size: 18px;
+}
+
+pre {
+    font-size: 16px;
+}
+
+.footpara {
+    display: inline-block;
+}
+
+figcaption {
+  font-size: 16px;
+  color: #666;
+  font-style: italic;
+  padding-bottom: 15px;
+}
+
+/* from twbs docs */
+
+.bs-docs-sidebar.affix {
+    position: static;
+}
+@media (min-width: 768px) {
+    .bs-docs-sidebar {
+        padding-left: 20px;
+    }
+}
+
+/* All levels of nav */
+.bs-docs-sidebar .nav > li > a {
+    display: block;
+    padding: 4px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #999;
+}
+.bs-docs-sidebar .nav > li > a:hover,
+.bs-docs-sidebar .nav > li > a:focus {
+    padding-left: 19px;
+    color: #A1283B;
+    text-decoration: none;
+    background-color: transparent;
+    border-left: 1px solid #A1283B;
+}
+.bs-docs-sidebar .nav > .active > a,
+.bs-docs-sidebar .nav > .active:hover > a,
+.bs-docs-sidebar .nav > .active:focus > a {
+    padding-left: 18px;
+    font-weight: bold;
+    color: #A1283B;
+    background-color: transparent;
+    border-left: 2px solid #A1283B;
+}
+
+/* Nav: second level (shown on .active) */
+.bs-docs-sidebar .nav .nav {
+    display: none; /* Hide by default, but at >768px, show it */
+    padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav .nav > li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 30px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.bs-docs-sidebar .nav .nav > li > a:hover,
+.bs-docs-sidebar .nav .nav > li > a:focus {
+    padding-left: 29px;
+}
+.bs-docs-sidebar .nav .nav > .active > a,
+.bs-docs-sidebar .nav .nav > .active:hover > a,
+.bs-docs-sidebar .nav .nav > .active:focus > a {
+    padding-left: 28px;
+    font-weight: 500;
+}
+
+/* Nav: third level (shown on .active) */
+.bs-docs-sidebar .nav .nav .nav {
+    padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav .nav .nav > li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 40px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.bs-docs-sidebar .nav .nav .nav > li > a:hover,
+.bs-docs-sidebar .nav .nav .nav > li > a:focus {
+    padding-left: 39px;
+}
+.bs-docs-sidebar .nav .nav .nav > .active > a,
+.bs-docs-sidebar .nav .nav .nav > .active:hover > a,
+.bs-docs-sidebar .nav .nav .nav > .active:focus > a {
+    padding-left: 38px;
+    font-weight: 500;
+}
+
+/* Show and affix the side nav when space allows it */
+@media (min-width: 992px) {
+    .bs-docs-sidebar .nav > .active > ul {
+        display: block;
+    }
+    /* Widen the fixed sidebar */
+    .bs-docs-sidebar.affix,
+    .bs-docs-sidebar.affix-bottom {
+        width: 213px;
+    }
+    .bs-docs-sidebar.affix {
+        position: fixed; /* Undo the static from mobile first approach */
+        top: 20px;
+    }
+    .bs-docs-sidebar.affix-bottom {
+        position: absolute; /* Undo the static from mobile first approach */
+    }
+    .bs-docs-sidebar.affix .bs-docs-sidenav,.bs-docs-sidebar.affix-bottom .bs-docs-sidenav {
+        margin-top: 0;
+        margin-bottom: 0
+    }
+}
+@media (min-width: 1200px) {
+    /* Widen the fixed sidebar again */
+    .bs-docs-sidebar.affix-bottom,
+    .bs-docs-sidebar.affix {
+        width: 263px;
+    }
+}
+</style>
+<script type="text/javascript">
+$(function() {
+    'use strict';
+
+    $('.bs-docs-sidebar li').first().addClass('active');
+
+    $(document.body).scrollspy({target: '.bs-docs-sidebar'});
+
+    $('.bs-docs-sidebar').affix();
+});
+</script>
+</head>
+<body>
+<div id="content" class="container">
+<div class="row"><div class="col-md-9"><h1 class="title">Webdev Survival Handbook: UIPEP Edition</h1>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+This guide has been made keeping the daily struggles of a lot of noob developers in mind. Hopefully this could be a reference for them till they are able to independently solve problems. I will be covering the basics which I think every web developer would be using in their day to day life. This could be a bit oversimplified for advanced users but hey, we all gotta start somewhere.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> The command line</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Love it or hate it, you'll have to be working with the command line so it's best to know some useful tips.
+</p>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Basic format</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+The usual format for the command line is as follows
+</p>
+
+<pre class="example">
+COMMAND --arg-1 --arg-2 ... file1 file2 ...
+</pre>
+
+<p>
+<b>TIP</b> Abbreviated arguments are usually prefixed with a single dash and whole words are prefixed with 2 dashes.
+</p>
+
+<p>
+<b>TIP</b> Abbreviated arguments can be stringed together. For example
+</p>
+
+<pre class="example">
+ls -l -a
+</pre>
+
+<p>
+can be shortened to
+</p>
+
+<pre class="example">
+ls -la
+</pre>
+
+<p>
+<b>NOTE</b> if you have properties along with arguments like how the <code>--output</code> arguments requires file names, it's usually together. For example
+instead of
+</p>
+
+<pre class="example">
+ssh -iv &lt;filename&gt;
+</pre>
+
+<p>
+it should be
+</p>
+
+<pre class="example">
+ssh -i &lt;filename&gt; -v
+</pre>
+
+<p>
+As <code>&lt;filename&gt;</code> is the property of <code>-i</code> (identity file), it should be paired together.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Common arguments</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Here are common arguments which you find in a lot of terminal commands
+</p>
+
+<ul class="org-ul">
+<li><code>-v</code> or <code>--verbose</code> for generating detailed output instead of showing basic information (used for debugging);
+</li>
+<li><code>-v</code> or <code>--version</code> for showing the version of the program.
+</li>
+<li><code>-h</code>, <code>--help</code> or <code>-help</code> for giving some details regarding usage of the command.
+</li>
+<li><code>-o</code> or <code>--output</code> for writing the output to a file.
+</li>
+<li><code>-a</code> or <code>--all</code> show all categories of the command including hidden categories
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Formatting options</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+This is the format that is going to be used throughout the handbook. You can refer this guide from time to time when you feel the examples are getting ambiguous.
+</p>
+
+<table class="table table-striped table-bordered table-hover table-condensed">
+
+
+<colgroup>
+<col  class="left">
+
+<col  class="left">
+
+<col  class="left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="text-left">Format</th>
+<th scope="col" class="text-left">Meaning</th>
+<th scope="col" class="text-left">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="text-left">Regular text</td>
+<td class="text-left">Type exactly as shown</td>
+<td class="text-left">git init</td>
+</tr>
+
+<tr>
+<td class="text-left">&lt;Tag&gt;</td>
+<td class="text-left">Replace with appropriate argument</td>
+<td class="text-left">cd &lt;filename&gt;</td>
+</tr>
+
+<tr>
+<td class="text-left">Elipsis (&#x2026;)</td>
+<td class="text-left">You can repeat as many arguments as you want</td>
+<td class="text-left">touch file1 file2 &#x2026;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Setting up</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+<b>NOTE</b> This is only applicable to people who are using Linux. Windows and MacOS people will have to wait till I update this. Also I'll be using the <code>apt</code> Package manager in my examples but you may use whatever default manager as you like
+</p>
+</div>
+
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Git</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+Installing git is as easy as
+</p>
+
+<pre class="example">
+sudo apt install git -y
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> Code editors</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+For most code editors, you can  go to their source page and download the <code>.deb</code> package. You can then double click it and the default installer appears. If you're using visual studio, you don't have to leave the terminal as there is a snap package.
+</p>
+
+<p>
+First install snapd
+</p>
+<pre class="example">
+sudo apt install snapd -y
+</pre>
+
+<p>
+Then you can install vscode using snap
+</p>
+<pre class="example">
+sudo snap install vscode --classic
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Mongodb</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+Installing mongodb requires a few steps.
+</p>
+
+<p>
+First, Import the public key used by the package management system.
+</p>
+
+<pre class="example">
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+</pre>
+
+<p>
+Then, create a list file for mongodb
+</p>
+<pre class="example">
+echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+</pre>
+
+<p>
+Then, do apt update
+</p>
+<pre class="example">
+sudo apt update
+</pre>
+
+<p>
+<b>NOTE</b> The newer ubuntu versions update by default but you can still run the command twice if you want
+</p>
+
+<p>
+Finally, install mongodb
+</p>
+<pre class="example">
+sudo apt-get install -y mongodb-org
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="section-number-3">4.4</span> MySQL</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+You can install Mysql using the <code>apt</code> repository using the foll command
+</p>
+
+<pre class="example">
+sudo apt install mysql-server -y
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5" class="outline-3">
+<h3 id="sec-4-5"><span class="section-number-3">4.5</span> Postman</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+You can either download and install via your browser or you can install it from the comfort of your terminal.
+</p>
+
+<p>
+First install snapd (You don't need to if you're using ubuntu I think)
+</p>
+<pre class="example">
+sudo apt install snapd -y
+</pre>
+
+<p>
+And then install postman via snap
+</p>
+
+<pre class="example">
+sudo snap install postman --classic
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4-6" class="outline-3">
+<h3 id="sec-4-6"><span class="section-number-3">4.6</span> Node</h3>
+<div class="outline-text-3" id="text-4-6">
+<p>
+You can install node via <code>apt</code> but it's probably best if you can change the versions whenever you want to. I personally recommend <a href="https://github.com/creationix/nvm">NVM</a>
+</p>
+
+<p>
+To install nvm, type
+</p>
+
+<pre class="example">
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+</pre>
+
+<p>
+If that doesn't work try with wget
+</p>
+
+<pre class="example">
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+</pre>
+
+<p>
+Then, source your <code>~/.bashrc</code> file by typing
+</p>
+
+<pre class="example">
+source ~/.bashrc
+</pre>
+
+<p>
+You can check if nvm is installed correctly by typing
+</p>
+<pre class="example">
+command -v nvm
+</pre>
+
+<p>
+If it's properly installed, you can proceed to install your version of node. Suppose you want to install v10.15.1, you can type
+</p>
+<pre class="example">
+nvm install 10.15.1
+</pre>
+
+<p>
+Once installed, you can check if the right versions are installed by typing
+</p>
+<pre class="example">
+node -v
+</pre>
+
+<p>
+and
+</p>
+
+<pre class="example">
+nvm -v
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Git</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+in order to manage huge projects among multiple people and keep track of every little change, we use git. in this section we explore how to
+</p>
+<ul class="org-ul">
+<li>Create a repository from scratch (initializing)
+</li>
+<li>Set up an existing repository from the cloud (cloning)
+</li>
+<li>Save changes (commiting)
+</li>
+<li>Basic troubleshooting examples and solutions
+</li>
+<li>Managing your own sub versions of the code (branching)
+</li>
+<li>Upload the contents to the cloud (pushing)
+</li>
+<li>Get the updated code from the cloud (pulling)
+</li>
+<li>Resolve conflicts when two people write code in the same file (merging)
+</li>
+</ul>
+</div>
+
+<div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> Initializing a git repository</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+First create a directory using the foll code. you can also use your file manager to create a folder
+</p>
+<pre class="example">
+mkdir &lt;project name&gt;
+</pre>
+<p>
+Now, we need to initialize a git repository. git won't be able to track your files until you have initialized them.
+</p>
+<pre class="example">
+git init
+</pre>
+<p>
+You will get an error saying this is not initialized, it's probably cuz you're in the wrong folder or haven't initialized the repo in git.
+</p>
+
+<p>
+Once the repository is initialized, you can continue with the development of the project. git will take care of managing the changes we've made for a particular project from now on.
+you can see a snapshot of your changes by typing the following command
+</p>
+<pre class="example">
+git status
+</pre>
+
+<p>
+<b>TIP</b> This command is very useful when you have to have a quick look at the files changed, added or deleted. You can even add the <code>--short</code> tag to just view the files without any extra description
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> Cloning an existing git repository</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+Most of the time, you will be required to work on an existing project rather than build one from scratch. in this case, the code will be provided on the git hosting domain like <a href="https://www.github.com">Github</a>, <a href="https://bitbucket.org/">Bitbucket</a>, <a href="https://www.gitlab.com">Gitlab</a> etc.
+This can be reffered to as cloning an existing repo. This can be done using the foll command
+</p>
+<pre class="example">
+git clone &lt;git url&gt; &lt;filename&gt;
+</pre>
+<p>
+Notice how I added the filename in the end. If we don't specify the filename, git will create a file with the same filename as the git repository's name.
+</p>
+
+<p>
+<b>WARNING</b> If you try to clone a repo into an existing repo, then it will create a new repo inside the parent repo.
+If you want to change the name of the repo, you can just change the filename in the git clone commmand.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-5-3" class="outline-3">
+<h3 id="sec-5-3"><span class="section-number-3">5.3</span> Adding files</h3>
+<div class="outline-text-3" id="text-5-3">
+<p>
+Just because you have initialized your repo doesn't mean git is ready to manage all your files. You have to specify which files git needs to track. You may think this is an unnecessary extra step but this way, you can have untracked files which contains sensitive information. More on that on a different thread.
+</p>
+
+<p>
+It's useful to imagine the tracked and untracked files to be living in 2 different locations
+</p>
+
+<ul class="org-ul">
+<li>The staging area is where git monitors all the changes.
+</li>
+<li>The working area is where none of the changes are monitored.
+</li>
+</ul>
+
+<p>
+In order for git to manage your files, you will need to add them to git. You can use the following command
+</p>
+<pre class="example">
+git add file1 file2 ...
+</pre>
+
+<p>
+<b>TIP</b> You can use <code>.</code> to add all the files in the existing direcory or <code>&lt;directory name&gt;/*</code> to include everything in a specific directory
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5-4" class="outline-3">
+<h3 id="sec-5-4"><span class="section-number-3">5.4</span> Commiting changes</h3>
+<div class="outline-text-3" id="text-5-4">
+<p>
+We have learned how to Initialize a git repository from scratch and clone from
+an existing repository. We even know how to view the changes we have made.
+However, the true power of git lies in saving snapshots of code. To do that,
+type
+</p>
+
+<pre class="example">
+git commit -a -m &lt;Commit message&gt;
+</pre>
+
+<p>
+In this example <code>-a</code> is used to commit all the files that are staged and <code>-m</code> is
+used to write a commit message. Commit messages are used to give a short
+description about the changes that you have made to the files. There is another
+command that is used to view all the existing commmands in a timeline format.
+This is used for viewing all the changes that you have made since the beginning.
+The command is as follows
+</p>
+
+<pre class="example">
+git log
+</pre>
+
+<p>
+<b>TIP</b> You can also add the <code>--oneline</code> tag to view each log in a short line.
+</p>
+
+<p>
+<b>NOTE</b> Try to keep log messages clean and readable. For example "Made changes" is a very vague
+sentence compared to "Fixed a bug in user model". The clearer the messages are,
+the easier it is for you to track down issues when they occur 
+</p>
+</div>
+</div>
+<div id="outline-container-sec-5-5" class="outline-3">
+<h3 id="sec-5-5"><span class="section-number-3">5.5</span> Managing branches</h3>
+<div class="outline-text-3" id="text-5-5">
+<p>
+Creating branches are a great way to organise our code when we are working on multiple incomplete features. I'll give you an example to illustrate.
+</p>
+
+<p>
+Suppose you are working on a feature. It's buggy and you're sure that you will break your code. You have 2 options
+</p>
+<ul class="org-ul">
+<li>Commit the code and tell them you're not ready to deploy the code as it might break. This is a waste of development time
+</li>
+<li>Don't commit the code and deploy the committed code. This is better but then there is no way to save your code.
+</li>
+</ul>
+
+<p>
+Git allows you to store your unfinished features into seperate branches so it doesn't interfere with the main source code. In fact, please use git branches when coding a new feature.
+</p>
+
+<p>
+Let's check out our current branch by typing out the following command
+</p>
+<pre class="example">
+git branch
+</pre>
+
+<p>
+If you have been following the instructions, you should probably be in the master branch. To fetch all branches from the remote, you can type
+</p>
+<pre class="example">
+git fetch --all
+</pre>
+
+<p>
+You can go to an existing branch by using the checkout command
+</p>
+<pre class="example">
+git checkout &lt;branchname&gt;
+</pre>
+
+<p>
+Notice that you type <code>git branch</code> now it will still not show all the branches that you have fetched. To view that, you will have to add the <code>--all</code> argument to the command.
+</p>
+
+<p>
+<b>TIP</b> You can use the <code>checkout</code> command to checkout different commits by typing the hash (the first 8 letters of a commit id).
+</p>
+
+<p>
+<b>TIP</b> You can use the <code>-b</code> command along with <code>git clone</code> to clone just the specific branch instead of the default master branch. For example
+</p>
+
+<pre class="example">
+git clone -b &lt;branchname&gt; &lt;git-url&gt; &lt;filename&gt;
+</pre>
+</div>
+
+
+<div id="outline-container-sec-5-5-1" class="outline-4">
+<h4 id="sec-5-5-1"><span class="section-number-4">5.5.1</span> Creating a new branch</h4>
+<div class="outline-text-4" id="text-5-5-1">
+<p>
+You can create a new branch by typing this
+</p>
+<pre class="example">
+git branch &lt;branchname&gt;
+</pre>
+
+<p>
+<b>TIP</b> You can use the <code>-b</code> argument with the <code>checkout</code> command to create and switch to a new branch. This saves you from typing an extra command.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5-5-2" class="outline-4">
+<h4 id="sec-5-5-2"><span class="section-number-4">5.5.2</span> Deleting an existing branch</h4>
+<div class="outline-text-4" id="text-5-5-2">
+<p>
+You can delete an existing branch using the <code>-D</code> attribute along with the <code>branch</code> command. For example
+</p>
+<pre class="example">
+git branch -D &lt;branchname&gt;
+</pre>
+
+<p>
+<b>WARNING</b> Git won't allow you to delete from the branch you are currently in. Always make sure to <code>checkout</code> to a new branch before deleting it.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-6" class="outline-3">
+<h3 id="sec-5-6"><span class="section-number-3">5.6</span> Pushing and pulling your repository</h3>
+<div class="outline-text-3" id="text-5-6">
+<p>
+Git is amazing when there are multiple people working on a single projects. Although our first instinct will be to copy paste code and share it among everyone, it's a terrible idea because of the following reasons I can think of over the top of my head
+</p>
+
+<ul class="org-ul">
+<li>You won't be able to make sure you have copied and pasted everything.
+</li>
+<li>You will have to keep copying it to everyone's files whenever someone changes something.
+</li>
+<li>You won't have a reliable record of the things that has changed and the list of things needed to be updated from all the people who are working in your code
+</li>
+</ul>
+
+<p>
+You can use this command to pull from an existing remote branch to your branch using 
+</p>
+<pre class="example">
+git pull origin &lt;branchname&gt;
+</pre>
+
+<p>
+You can use this command to push to an existing branch in the remote using
+</p>
+<pre class="example">
+git push origin &lt;branchname&gt;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> SSH</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+If you are supposed to deploy a server on an amazon EC2 instance, this command could come in handy
+</p>
+</div>
+
+<div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> Giving an alias to your ip address</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+Remembering ip addressess is a useless skill if you're using linux, as you can create an alias for your public ip address which could be used throughout your system, which includes
+</p>
+<ul class="org-ul">
+<li>Your terminal when you use the <code>ping</code> or <code>dig</code> command
+</li>
+<li>Your browser
+</li>
+</ul>
+
+<p>
+The most popular ip address alias is localhost. When you type localhost, It is understood by the system that it (usually) means 127.0.0.1. You can check this by opening the file <code>/etc/hosts</code>
+</p>
+
+<p>
+To create an alias, you can open your <code>/etc/hosts</code> file using the editor of choice and type out the following in the last line
+</p>
+<pre class="example">
+&lt;ip address&gt; &lt;alias name&gt;
+</pre>
+
+<p>
+for example, if your alias name is dummyip and ip address is 1.1.1.1, then type
+</p>
+
+<pre class="example">
+1.1.1.1 dummyip
+</pre>
+
+<p>
+Save the file and then you'll be able to use the alias anywhere
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="section-number-3">6.2</span> Using the ssh command</h3>
+<div class="outline-text-3" id="text-6-2">
+<p>
+The <code>ssh</code> command is used to connect remotely to another system via the terminal. It would be as if you've opened a terminal screen of that system on your system. This could be used to open AWS EC2 instance servers for example. You can use the command as follows
+</p>
+
+<pre class="example">
+ssh -i &lt;path/to/pem/file.pem &lt;username&gt;@&lt;your ip or alias&gt;
+</pre>
+
+<p>
+A real life example would be
+</p>
+
+<pre class="example">
+ssh -i ~/Downloads/uipep/pem ubuntu@uipepserver
+</pre>
+
+<p>
+where <code>-i</code> stands for identitly (pem) file.
+</p>
+</div>
+</div>
+</div>
+</div><div class="col-md-3"><nav id="table-of-contents">
+<div id="text-table-of-contents" class="bs-docs-sidebar">
+<ul class="nav">
+<li><a href="#sec-1">1. Introduction</a></li>
+<li><a href="#sec-2">2. The command line</a>
+<ul class="nav">
+<li><a href="#sec-2-1">2.1. Basic format</a></li>
+<li><a href="#sec-2-2">2.2. Common arguments</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3. Formatting options</a></li>
+<li><a href="#sec-4">4. Setting up</a>
+<ul class="nav">
+<li><a href="#sec-4-1">4.1. Git</a></li>
+<li><a href="#sec-4-2">4.2. Code editors</a></li>
+<li><a href="#sec-4-3">4.3. Mongodb</a></li>
+<li><a href="#sec-4-4">4.4. MySQL</a></li>
+<li><a href="#sec-4-5">4.5. Postman</a></li>
+<li><a href="#sec-4-6">4.6. Node</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5. Git</a>
+<ul class="nav">
+<li><a href="#sec-5-1">5.1. Initializing a git repository</a></li>
+<li><a href="#sec-5-2">5.2. Cloning an existing git repository</a></li>
+<li><a href="#sec-5-3">5.3. Adding files</a></li>
+<li><a href="#sec-5-4">5.4. Commiting changes</a></li>
+<li><a href="#sec-5-5">5.5. Managing branches</a></li>
+<li><a href="#sec-5-6">5.6. Pushing and pulling your repository</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6. SSH</a>
+<ul class="nav">
+<li><a href="#sec-6-1">6.1. Giving an alias to your ip address</a></li>
+<li><a href="#sec-6-2">6.2. Using the ssh command</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+</div></div></div>
+<footer id="postamble" class="">
+<div><p class="author">Author: Paul Joshy</p>
+<p class="date">Created: 2020-03-05 Thu 15:08</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="http://orgmode.org">Org-mode</a> 9.2.6)</p>
+</div>
+</footer>
+</body>
+</html>

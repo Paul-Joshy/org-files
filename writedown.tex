@@ -1,0 +1,171 @@
+% Created 2020-03-21 Sat 15:36
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{Paul Joshy}
+\date{\today}
+\title{Writedown Documentation}
+\hypersetup{
+ pdfauthor={Paul Joshy},
+ pdftitle={Writedown Documentation},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.3 (Org mode 9.2.6)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\section{Introduction}
+\label{sec:org6e6ef8a}
+
+This is a format that I've devised for jotting down pseudocode. I think it is better because
+\begin{itemize}
+\item It forces us to think like a compiler and stick to rigid rules
+\item It's top to bottom and we don't have to go back and edit what we've written
+\item It's equally easy to write it down or type it out in a regular computer
+\item It is engineered for repetitive output so it's easier for our brain to recognize patterns easily
+\end{itemize}
+
+
+Idk if it's useful or not but if I'm being ambitious I think it can
+
+\begin{itemize}
+\item Work as an export format for logging
+\item Can automate test cases by checking congruency of diff writedown files
+\item Can be used to teach introductory CS to almost anyone without the need for an actual computer
+\end{itemize}
+
+\section{Basic rules}
+\label{sec:org3a0cf10}
+
+\begin{itemize}
+\item All variables are functions
+\item All functions should return output even when piped
+\item if you're in a function (f prefixed) block or an argument (<>) block, you don't have to give output
+\item deferred output (written in o block) should give outputs with variables or expressions. eg \texttt{variable[output]} or \texttt{?[output]}
+\item all outputs except in <> should only be from one variable at a time
+\item functions have to be rewritten from scratch when they are changed or they can be piped to include changes
+\end{itemize}
+
+
+\section{Syntax}
+\label{sec:org8a658b2}
+\subsection{Basic output}
+\label{sec:org7f589af}
+
+\begin{itemize}
+\item Outputs are usually enclosed within square brackets \texttt{[out]}
+\item Outputs returned by functions are enclosed inside angular brackets seperated by argumenets \texttt{<arg1[out],arg2[out]>}
+\item Outputs returned by constants are enclosed inside double square brackets \texttt{[[const output]]}
+\item We can append outputs inside outputs using curly braces \texttt{["Hi, My name is (name)"]}
+\end{itemize}
+
+\subsection{Variables and constants}
+\label{sec:orgf435fde}
+
+\begin{itemize}
+\item Variables are denoted by regular non spaced words eg: \texttt{var1}
+\item They can be assigned values using the \texttt{=} sign eg: \texttt{var1 = "val"}
+\item constants are denoted by prefixing c before the name eg: \texttt{cpi=3.14}
+\end{itemize}
+
+\subsection{if block}
+\label{sec:org649d465}
+
+\begin{itemize}
+\item An if block expression ends with \texttt{?}
+\item it has a true \texttt{t} block and a false \texttt{f} block
+\item they both are ended by a \texttt{et} block or a \texttt{ef} block respectively
+\end{itemize}
+
+\subsection{functions}
+\label{sec:org9aac404}
+
+\begin{itemize}
+\item Functions are denoted by prefixing f before the function name eg: \texttt{fprime}
+\item They are ended by prefixing e before the function name eg: \texttt{eprime}
+\end{itemize}
+
+\subsection{Output block}
+\label{sec:orgd7a7f6e}
+
+Outputs blocks are called when deferred output exists. Deferred outputs are outputs that are written long after the expression is written. for eg, calling a function or a loop.
+They are called using \texttt{o} and \texttt{eo} blocks 
+
+\subsection{Comments}
+\label{sec:org4f3fdf3}
+
+You can use Single line \texttt{\#} comments
+
+\section{Code example}
+\label{sec:orgaf3b3b1}
+
+Here is the code for doing the following algorithm
+
+\begin{itemize}
+\item Step 1: set loop = 0 and doubler = 0
+\item Step 2: Add 1 to loop
+\item Step 3: Multiply doubler by two
+\item Step 4: if Loop < 4 go to step 2
+\item Step 5: Return doubler
+\item Step 6: End
+\end{itemize}
+
+eg code
+\begin{verbatim}
+# simple looping function
+loop[0], doubler[1]
+
+fforloop<loop,doubler>
+loop++
+doubler*2
+loop<4?
+t
+=forloop<loop,doubler>
+et
+
+f
+r<doubler>
+ef
+
+eforloop
+
+=forloop<loop[0],doubler[1]>
+o
+# 1st iteration
+loop[2]
+doubler[2]
+?[true]
+# 2nd iteration
+loop[2]
+doubler[4]
+?[true]
+# 3rd iteration
+loop[3]
+doubler[8]
+?[true]
+# 4th iteration
+loop[4]
+doubler[16]
+?[false]
+<doubler[16]>
+# 
+eo
+
+\end{verbatim}
+\end{document}

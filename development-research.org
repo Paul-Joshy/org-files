@@ -1,0 +1,27 @@
+
+* Coding
+
+- Suckless philosophy
+- Unix philosophy
+- Project euler
+- Coding as an extension to writing
+
+
+* Platform
+
+** Editors  
+
+*** Webstorm
+
+TODO Material theme color issues
+
+*** Vim
+*** Emacs
+
+TODO Learn org mode
+
+** OS
+** Apps
+
+TODO update skype
+TODO find app for simple bujo
