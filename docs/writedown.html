@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writedown</title>
+<meta name="description" content="Writedown: a pseudocode format where you write the program and its output together, top to bottom.">
+<meta name="author" content="Paul Joshy">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --code-bg: #f3f1ec;
+  --text: #1f1d1a;
+  --muted: #6b665e;
+  --border: #e4e0d8;
+  --accent: #b4532a;
+  --accent-soft: #f6e6dc;
+  --kw: #8a3ffc;
+  --fn: #0f6fbf;
+  --out: #1b7f4c;
+  --cm: #8c867c;
+  --num: #b4532a;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161514;
+    --surface: #1e1d1b;
+    --code-bg: #252320;
+    --text: #ece8e1;
+    --muted: #a39d93;
+    --border: #34312d;
+    --accent: #f08a5d;
+    --accent-soft: #3a2a21;
+    --kw: #c4a1ff;
+    --fn: #6cb6ff;
+    --out: #6fd49b;
+    --cm: #8a847a;
+    --num: #f0a57d;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 17px/1.65 Inter, system-ui, -apple-system, sans-serif;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+header { padding: 64px 0 32px; border-bottom: 1px solid var(--border); }
+header .eyebrow { color: var(--accent); font-weight: 600; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; }
+h1 { font-size: 44px; line-height: 1.1; margin: 8px 0 16px; letter-spacing: -0.02em; }
+.lede { font-size: 20px; color: var(--muted); margin: 0; }
+nav { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 8px; }
+nav a {
+  font-size: 14px; color: var(--text); text-decoration: none;
+  border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; background: var(--surface);
+}
+nav a:hover { border-color: var(--accent); color: var(--accent); }
+section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+h2 { font-size: 28px; margin: 0 0 16px; letter-spacing: -0.01em; }
+h3 { font-size: 19px; margin: 28px 0 8px; }
+p { margin: 0 0 14px; }
+ul, ol { padding-left: 22px; margin: 0 0 14px; }
+li { margin: 4px 0; }
+a { color: var(--accent); }
+code {
+  font-family: "JetBrains Mono", ui-monospace, monospace; font-size: .88em;
+  background: var(--code-bg); padding: 1px 6px; border-radius: 4px;
+}
+pre {
+  font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 14.5px; line-height: 1.6;
+  background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px;
+  padding: 16px 18px; overflow-x: auto; margin: 0 0 16px;
+}
+pre code { background: none; padding: 0; font-size: inherit; }
+.kw { color: var(--kw); font-weight: 500; }
+.fn { color: var(--fn); }
+.out { color: var(--out); }
+.cm { color: var(--cm); font-style: italic; }
+.num { color: var(--num); }
+.callout {
+  background: var(--accent-soft); border-left: 3px solid var(--accent);
+  padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 0 0 16px;
+}
+.table-wrap { overflow-x: auto; margin: 0 0 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15.5px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
+td code { white-space: nowrap; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.split h4 { margin: 0 0 8px; font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+@media (max-width: 640px) {
+  h1 { font-size: 34px; }
+  .lede { font-size: 18px; }
+  .split { grid-template-columns: 1fr; }
+  header { padding-top: 40px; }
+}
+footer { padding: 32px 0 56px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Pseudocode format</div>
+  <h1>Writedown</h1>
+  <p class="lede">Write the program and what it outputs together, top to bottom, with rules strict enough that you have to think like a compiler.</p>
+  <nav>
+    <a href="#why">Why</a>
+    <a href="#tour">Quick tour</a>
+    <a href="#example">Example</a>
+    <a href="#rules">Rules</a>
+    <a href="#grammar">Grammar</a>
+  </nav>
+</header>
+
+<section id="why">
+  <h2>Why Writedown</h2>
+  <ul>
+    <li><strong>Rigid rules.</strong> You have to think the way a compiler does.</li>
+    <li><strong>Top to bottom.</strong> You never go back to edit what you've already written.</li>
+    <li><strong>Works on paper.</strong> It's as easy to write by hand as it is to type.</li>
+    <li><strong>Repetitive on purpose.</strong> Output repeats in a fixed shape, so patterns are easy to spot.</li>
+  </ul>
+  <p>If it works, it could also be:</p>
+  <ul>
+    <li>an export format for logs</li>
+    <li>a way to test code automatically, by diffing two Writedown files of the same run</li>
+    <li>a way to teach intro CS to almost anyone, without a computer</li>
+  </ul>
+</section>
+
+<section id="tour">
+  <h2>Quick tour</h2>
+  <p>Everything in Writedown, on one table.</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Write</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>var1 = "val"</code></td><td>Assign a variable</td></tr>
+      <tr><td><code>loop[0]</code></td><td>Set a variable and show its output in one step</td></tr>
+      <tr><td><code>cpi = 3.14</code></td><td>Constant: the name starts with <code>c</code></td></tr>
+      <tr><td><code>cpi[[3.14]]</code></td><td>A constant's output uses double brackets</td></tr>
+      <tr><td><code>["Hi, {name}"]</code></td><td>Insert a value inside an output</td></tr>
+      <tr><td><code>x++</code> <code>x *= 2</code></td><td>Update a variable in place</td></tr>
+      <tr><td><code>loop&lt;4?</code></td><td>If: a condition ends with <code>?</code></td></tr>
+      <tr><td><code>t</code> … <code>et</code></td><td>The true branch</td></tr>
+      <tr><td><code>f</code> … <code>ef</code></td><td>The false branch</td></tr>
+      <tr><td><code>fprime&lt;n&gt;</code> … <code>eprime</code></td><td>Define the function <code>prime</code> with the argument <code>n</code></td></tr>
+      <tr><td><code>=prime&lt;1&gt;</code></td><td>Call a function</td></tr>
+      <tr><td><code>r&lt;x&gt;</code></td><td>Return a value from a function</td></tr>
+      <tr><td><code>&lt;x[16]&gt;</code></td><td>The output a function returned</td></tr>
+      <tr><td><code>o</code> … <code>eo</code></td><td>Output block: output that's shown later, like each step of a call</td></tr>
+      <tr><td><code>?[true]</code></td><td>The result of a condition</td></tr>
+      <tr><td><code># note</code></td><td>Comment</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout">There is no loop keyword. To loop, write a function that calls itself.</div>
+</section>
+
+<section id="example">
+  <h2>Example: doubling four times</h2>
+  <p>The algorithm:</p>
+  <ol>
+    <li>Set <code>loop</code> to 0 and <code>doubler</code> to 1</li>
+    <li>Add 1 to <code>loop</code></li>
+    <li>Multiply <code>doubler</code> by 2</li>
+    <li>If <code>loop</code> &lt; 4, go to step 2</li>
+    <li>Return <code>doubler</code></li>
+  </ol>
+  <p>In Writedown, the code comes first. Then the call, and its output block traces every step.</p>
+  <div class="split">
+    <div>
+      <h4>Code</h4>
+<pre><code><span class="cm"># simple looping function</span>
+<span class="out">loop[0], doubler[1]</span>
+
+<span class="kw">f</span><span class="fn">forloop</span>&lt;loop,doubler&gt;
+loop++
+doubler*=<span class="num">2</span>
+loop&lt;<span class="num">4</span>?
+<span class="kw">t</span>
+<span class="fn">=forloop</span>&lt;loop,doubler&gt;
+<span class="kw">et</span>
+
+<span class="kw">f</span>
+<span class="kw">r</span>&lt;doubler&gt;
+<span class="kw">ef</span>
+
+<span class="kw">e</span><span class="fn">forloop</span></code></pre>
+    </div>
+    <div>
+      <h4>Call and trace</h4>
+<pre><code><span class="fn">=forloop</span>&lt;<span class="out">loop[0]</span>,<span class="out">doubler[1]</span>&gt;
+<span class="kw">o</span>
+<span class="cm"># 1st iteration</span>
+<span class="out">loop[1]</span>
+<span class="out">doubler[2]</span>
+<span class="out">?[true]</span>
+<span class="cm"># 2nd iteration</span>
+<span class="out">loop[2]</span>
+<span class="out">doubler[4]</span>
+<span class="out">?[true]</span>
+<span class="cm"># 3rd iteration</span>
+<span class="out">loop[3]</span>
+<span class="out">doubler[8]</span>
+<span class="out">?[true]</span>
+<span class="cm"># 4th iteration</span>
+<span class="out">loop[4]</span>
+<span class="out">doubler[16]</span>
+<span class="out">?[false]</span>
+<span class="out">&lt;doubler[16]&gt;</span>
+<span class="kw">eo</span></code></pre>
+    </div>
+  </div>
+  <p>Green lines are outputs. If you run the same program twice, you get the same trace, so two runs can be checked with a plain diff.</p>
+</section>
+
+<section id="rules">
+  <h2>Rules</h2>
+  <ul>
+    <li><strong>All variables are functions.</strong> A variable behaves like a function with no arguments that returns its current value. That's why its output is written the same way as any other output.</li>
+    <li>Every function gives output, even when piped.</li>
+    <li>Inside a function block or an argument (<code>&lt;&gt;</code>) block, you don't have to write outputs.</li>
+    <li>Deferred output goes in an <code>o</code> block and is written as <code>variable[output]</code> or <code>?[output]</code>.</li>
+    <li>Outside <code>&lt;&gt;</code>, each output line shows one variable.</li>
+    <li>To change a function, rewrite it from scratch, or pipe it to add the changes.</li>
+    <li>Variable names can't start with <code>c</code>, because that prefix is reserved for constants.</li>
+    <li>A variable can't be named <code>t</code>, <code>f</code> or <code>o</code>, because those lines are block words.</li>
+  </ul>
+</section>
+
+<section id="grammar">
+  <h2>Formal grammar</h2>
+  <p>Writedown is read one line at a time. Each line holds at most one statement, and can end with a comment.</p>
+  <p>This is written in EBNF: <code>=</code> defines a rule, <code>|</code> means "or", <code>[ ]</code> means optional, <code>{ }</code> means zero or more, and quoted text is written literally.</p>
+<pre><code>program      = { line } ;
+line         = [ statement ] [ comment ] NEWLINE ;
+comment      = "#" { any-char } ;
+
+statement    = block-word | fn-start | fn-end | if-head
+             | return | call | const-decl | assignment | update
+             | trace-list ;
+
+<span class="cm">(* blocks *)</span>
+block-word   = "t" | "et" | "f" | "ef" | "o" | "eo" ;
+fn-start     = "f" name [ "&lt;" params "&gt;" ] ;
+fn-end       = "e" name ;
+params       = name { "," name } ;
+if-head      = expr "?" ;
+
+<span class="cm">(* actions *)</span>
+return       = "r" "&lt;" args "&gt;" ;
+call         = "=" name "&lt;" [ args ] "&gt;" ;
+args         = arg { "," arg } ;
+arg          = trace | expr ;
+const-decl   = const-name "=" expr ;
+assignment   = var-name "=" expr ;
+update       = var-name ( "++" | "--" | assign-op expr ) ;
+assign-op    = "+=" | "-=" | "*=" | "/=" ;
+
+<span class="cm">(* outputs *)</span>
+trace-list   = trace { "," trace } ;
+trace        = var-name   "["  value "]"
+             | const-name "[[" value "]]"
+             | "?" "[" ( "true" | "false" ) "]"
+             | "&lt;" trace { "," trace } "&gt;" ;
+value        = expr ;
+
+<span class="cm">(* expressions *)</span>
+expr         = sum [ compare-op sum ] ;
+compare-op   = "&lt;" | "&gt;" | "&lt;=" | "&gt;=" | "==" | "!=" ;
+sum          = term { ( "+" | "-" ) term } ;
+term         = factor { ( "*" | "/" | "%" ) factor } ;
+factor       = number | string | "true" | "false"
+             | var-name | const-name | call | "(" expr ")" ;
+
+<span class="cm">(* words *)</span>
+name         = letter { letter | digit | "_" } ;
+const-name   = "c" name ;
+var-name     = name ;      <span class="cm">(* must not start with "c" *)</span>
+number       = [ "-" ] digit { digit } [ "." digit { digit } ] ;
+string       = '"' { char | "{" name "}" } '"' ;</code></pre>
+
+  <h3>Reading a line</h3>
+  <p>Some lines look alike, so a reader decides what a line is by checking in this order:</p>
+  <ol>
+    <li>The whole line is <code>t</code>, <code>et</code>, <code>f</code>, <code>ef</code>, <code>o</code> or <code>eo</code>: it's a block word.</li>
+    <li>The line ends with <code>?</code>: it's an if head, and every <code>&lt;</code> or <code>&gt;</code> on it is a comparison.</li>
+    <li>The line is <code>f</code> followed by a name and maybe <code>&lt;params&gt;</code>: it starts a function.</li>
+    <li>The line is <code>e</code> followed by a name and nothing else: it ends a function.</li>
+    <li>Anything else is matched against the remaining statement rules.</li>
+  </ol>
+
+  <h3>Rules the grammar can't check</h3>
+  <p>These need a checker that reads the whole file, not just one line:</p>
+  <ul>
+    <li>every <code>fname</code> has a matching <code>ename</code> later on</li>
+    <li>every <code>t</code> is closed by <code>et</code>, every <code>f</code> by <code>ef</code>, and every <code>o</code> by <code>eo</code></li>
+    <li><code>t</code> and <code>f</code> blocks only come right after an if head</li>
+    <li>an <code>o</code> block comes right after the call whose output it shows</li>
+    <li>outside a function or <code>&lt;&gt;</code> block, every statement gives an output</li>
+    <li>outside <code>&lt;&gt;</code>, each output line shows one variable</li>
+  </ul>
+</section>
+
+<footer>
+  Writedown by Paul Joshy. Source: <a href="https://github.com/Paul-Joshy/org-files/blob/master/writedown.org">writedown.org</a>
+</footer>
+
+</div>
+</body>
+</html>

@@ -2,7 +2,7 @@
 #+author: Paul Joshy
 
 * Introduction
-  
+
 This is a format that I've devised for jotting down pseudocode. I think it is better because
 - It forces us to think like a compiler and stick to rigid rules
 - It's top to bottom and we don't have to go back and edit what we've written
@@ -18,49 +18,59 @@ Idk if it's useful or not but if I'm being ambitious I think it can
 
 * Basic rules
 
-- All variables are functions
+- All variables are functions: a variable behaves like a function with no arguments that returns its current value, which is why its output is written the same way as any other output
 - All functions should return output even when piped
-- if you're in a function (f prefixed) block or an argument (<>) block, you don't have to give output
-- deferred output (written in o block) should give outputs with variables or expressions. eg =variable[output]= or =?[output]=
-- all outputs except in <> should only be from one variable at a time
+- if you're in a function (f prefixed) block or an argument (~<>~) block, you don't have to give output
+- deferred output (written in o block) should give outputs with variables or expressions. eg ~variable[output]~ or ~?[output]~
+- all outputs except in ~<>~ should only be from one variable at a time
 - functions have to be rewritten from scratch when they are changed or they can be piped to include changes
- 
+- variable names can't start with =c=, because that prefix is reserved for constants
+
 * Syntax
 ** Basic output
 
-- Outputs are usually enclosed within square brackets =[out]=
-- Outputs returned by functions are enclosed inside angular brackets seperated by argumenets =<arg1[out],arg2[out]>=
-- Outputs returned by constants are enclosed inside double square brackets =[[const output]]=
-- We can append outputs inside outputs using curly braces =["Hi, My name is (name)"]=
+- Outputs are usually enclosed within square brackets ~[out]~
+- Outputs returned by functions are enclosed inside angular brackets separated by arguments ~<arg1[out],arg2[out]>~
+- Outputs returned by constants are enclosed inside double square brackets ~[[const output]]~
+- We can insert values inside outputs using curly braces ~["Hi, My name is {name}"]~
 
 ** Variables and constants
 
-- Variables are denoted by regular non spaced words eg: =var1=
-- They can be assigned values using the === sign eg: =var1 = "val"=
-- constants are denoted by prefixing c before the name eg: =cpi=3.14=
+- Variables are denoted by regular non spaced words eg: ~var1~
+- They can be assigned values using the ~=~ sign eg: ~var1 = "val"~
+- Writing ~var1[val]~ outside a function sets the variable and shows its output in one step eg: ~loop[0]~
+- constants are denoted by prefixing c before the name eg: ~cpi = 3.14~
+
+** Operators
+
+- Arithmetic: ~+~ ~-~ ~*~ ~/~ ~%~
+- Comparison: ~<~ ~>~ ~<=~ ~>=~ ~==~ ~!=~
+- Update in place: ~x++~ ~x--~ ~x += 1~ ~x -= 1~ ~x *= 2~ ~x /= 2~
 
 ** if block
 
-- An if block expression ends with =?=
-- it has a true =t= block and a false =f= block
-- they both are ended by a =et= block or a =ef= block respectively
+- An if block expression ends with ~?~ eg: ~loop<4?~
+- it has a true ~t~ block and a false ~f~ block
+- they both are ended by a ~et~ block or a ~ef~ block respectively
 
 ** functions
-   
-- Functions are denoted by prefixing f before the function name eg: =fprime=
-- They can have arguments denoted by the =<>= key eg: =fprime<number>=
-- They are ended by prefixing e before the function name eg: =eprime=
-- They are called by prefixing the === sign to them and passing parameters usign =<>= keys eg: ==fprime<1>=
+
+- Functions are denoted by prefixing f before the function name eg: ~fprime~
+- They can have arguments denoted by the ~<>~ key eg: ~fprime<number>~
+- They are ended by prefixing e before the function name eg: ~eprime~
+- They are called by prefixing the ~=~ sign to them and passing parameters using ~<>~ keys eg: ~=prime<1>~
+- They return values using ~r<>~ eg: ~r<doubler>~
+- There is no loop keyword. Loops are written as functions that call themselves
 
 ** Output block
 
-Outputs blocks are called when deferred output exists. Deferred outputs are outputs that are written long after the expression is written. for eg, calling a function or a loop.
-They are called using =o= and =eo= blocks 
+Output blocks are used when deferred output exists. Deferred outputs are outputs that are written long after the expression is written, for eg calling a function or a loop.
+They are written using ~o~ and ~eo~ blocks
 
 ** Comments
-  
-You can use Single line =#= comments
- 
+
+You can use single line ~#~ comments
+
 * Code example
 
 Here is the code for doing the following algorithm
@@ -68,7 +78,7 @@ Here is the code for doing the following algorithm
 - Step 1: set loop = 0 and doubler = 1
 - Step 2: Add 1 to loop
 - Step 3: Multiply doubler by two
-- Step 4: if Loop < 4 go to step 2
+- Step 4: if loop < 4 go to step 2
 - Step 5: Return doubler
 - Step 6: End
 
@@ -79,7 +89,7 @@ loop[0], doubler[1]
 
 fforloop<loop,doubler>
 loop++
-doubler*2
+doubler*=2
 loop<4?
 t
 =forloop<loop,doubler>
@@ -94,7 +104,7 @@ eforloop
 =forloop<loop[0],doubler[1]>
 o
 # 1st iteration
-loop[2]
+loop[1]
 doubler[2]
 ?[true]
 # 2nd iteration
@@ -110,7 +120,85 @@ loop[4]
 doubler[16]
 ?[false]
 <doubler[16]>
-# 
 eo
 
 #+end_src
+
+* Formal grammar
+
+Writedown is read one line at a time. Each line holds at most one statement, optionally followed by a comment.
+
+The grammar below is in EBNF: ~=~ defines a rule, ~|~ means "or", ~[ ]~ means optional, ~{ }~ means zero or more, and quoted text is written literally.
+
+#+begin_src ebnf
+program      = { line } ;
+line         = [ statement ] [ comment ] NEWLINE ;
+comment      = "#" { any-char } ;
+
+statement    = block-word | fn-start | fn-end | if-head
+             | return | call | const-decl | assignment | update
+             | trace-list ;
+
+(* blocks *)
+block-word   = "t" | "et" | "f" | "ef" | "o" | "eo" ;
+fn-start     = "f" name [ "<" params ">" ] ;
+fn-end       = "e" name ;
+params       = name { "," name } ;
+if-head      = expr "?" ;
+
+(* actions *)
+return       = "r" "<" args ">" ;
+call         = "=" name "<" [ args ] ">" ;
+args         = arg { "," arg } ;
+arg          = trace | expr ;
+const-decl   = const-name "=" expr ;
+assignment   = var-name "=" expr ;
+update       = var-name ( "++" | "--" | assign-op expr ) ;
+assign-op    = "+=" | "-=" | "*=" | "/=" ;
+
+(* outputs *)
+trace-list   = trace { "," trace } ;
+trace        = var-name   "["  value "]"
+             | const-name "[[" value "]]"
+             | "?" "[" ( "true" | "false" ) "]"
+             | "<" trace { "," trace } ">" ;
+value        = expr ;
+
+(* expressions *)
+expr         = sum [ compare-op sum ] ;
+compare-op   = "<" | ">" | "<=" | ">=" | "==" | "!=" ;
+sum          = term { ( "+" | "-" ) term } ;
+term         = factor { ( "*" | "/" | "%" ) factor } ;
+factor       = number | string | "true" | "false"
+             | var-name | const-name | call | "(" expr ")" ;
+
+(* words *)
+name         = letter { letter | digit | "_" } ;
+const-name   = "c" name ;
+var-name     = name ;      (* must not start with "c" *)
+number       = [ "-" ] digit { digit } [ "." digit { digit } ] ;
+string       = '"' { char | "{" name "}" } '"' ;
+#+end_src
+
+** Reading a line
+
+Some lines look alike, so a reader decides what a line is by checking in this order:
+
+1. The whole line is =t=, =et=, =f=, =ef=, =o= or =eo=: it's a block word
+2. The line ends with ~?~: it's an if head, and every ~<~ or ~>~ on it is a comparison
+3. The line is =f= followed by a name and maybe ~<params>~: it starts a function
+4. The line is =e= followed by a name and nothing else: it ends a function
+5. Anything else is matched against the remaining statement rules
+
+This is why a variable can't be called =t=, =f= or =o=: those lines would be read as block words.
+
+** Rules the grammar can't check
+
+These need a checker that reads the whole file, not just one line:
+
+- every =fname= has a matching =ename= later on
+- every =t= is closed by =et=, every =f= by =ef=, and every =o= by =eo=
+- =t= and =f= blocks only come right after an if head
+- an =o= block comes right after the call whose output it shows
+- outside a function or ~<>~ block, every statement gives an output
+- outside ~<>~, each output line shows one variable
